@@ -6,6 +6,7 @@ import Login from '../views/Login.vue'
 import Home from '../views/Home.vue'
 import HomePublish from '../components/HomePublish.vue'
 import HomeList from '../components/HomeList.vue'
+import HomeDetail from '../components/HomeDetail.vue'
 
 export default new Router({
   routes: [
@@ -16,7 +17,7 @@ export default new Router({
     },
     {
       name: 'Home',
-      path: '/home/publish',
+      path: '/home/publish/:id',
       component: Home,
       children: [
         {
@@ -26,8 +27,13 @@ export default new Router({
         },
         {
           name: 'HomePublish',
-          path: '/home/publish',
+          path: '/home/publish/:id',
           component: HomePublish
+        },
+        {
+          name: 'HomeDetail',
+          path: '/home/detail/:id',
+          component: HomeDetail
         }
       ]
     }

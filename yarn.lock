@@ -103,6 +103,13 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
+"@tinymce/tinymce-vue@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.npm.taobao.org/@tinymce/tinymce-vue/download/@tinymce/tinymce-vue-2.0.0.tgz#41cea256f67f195ac52f71b1cc0bcbda850c86f0"
+  integrity sha1-Qc6iVvZ/GVrFL3GxzAvL2oUMhvA=
+  dependencies:
+    vue "^2.5.17"
+
 "@types/node@^8.0.7":
   version "8.10.49"
   resolved "https://registry.npm.taobao.org/@types/node/download/@types/node-8.10.49.tgz#f331afc5efed0796798e5591d6e0ece636969b7b"
@@ -8322,6 +8329,11 @@ timers-browserify@^2.0.4:
   dependencies:
     setimmediate "^1.0.4"
 
+tinymce@^5.0.6:
+  version "5.0.6"
+  resolved "https://registry.npm.taobao.org/tinymce/download/tinymce-5.0.6.tgz#a31972acf3fe4c4440229d3223b17b965a302258"
+  integrity sha1-oxlyrPP+TERAIp0yI7F7llowIlg=
+
 tmp@^0.0.33:
   version "0.0.33"
   resolved "https://registry.npm.taobao.org/tmp/download/tmp-0.0.33.tgz#6d34335889768d21b2bcda0aa277ced3b1bfadf9"
@@ -8788,7 +8800,7 @@ vue-template-es2015-compiler@^1.5.3, vue-template-es2015-compiler@^1.6.0:
   resolved "https://registry.npm.taobao.org/vue-template-es2015-compiler/download/vue-template-es2015-compiler-1.9.1.tgz#1ee3bc9a16ecbf5118be334bb15f9c46f82f5825"
   integrity sha1-HuO8mhbsv1EYvjNLsV+cRvgvWCU=
 
-vue@^2.5.2:
+vue@^2.5.17, vue@^2.5.2:
   version "2.6.10"
   resolved "https://registry.npm.taobao.org/vue/download/vue-2.6.10.tgz#a72b1a42a4d82a721ea438d1b6bf55e66195c637"
   integrity sha1-pysaQqTYKnIepDjRtr9V5mGVxjc=
