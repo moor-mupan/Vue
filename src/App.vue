@@ -40,7 +40,7 @@ body {
   padding: 0;
   margin: 0;
   height: 100%;
-  width: 1200px;
+  width: 1280px;
   position: absolute;
   left: 50%;
   top: 50%;

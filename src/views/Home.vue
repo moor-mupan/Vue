@@ -78,6 +78,12 @@ export default {
     } else {
       this.isActive = true;
     }
+  },
+  watch: {
+    // 实时监听导航变化
+    '$route': (to, from) => {
+        // console.log(to, from)
+    }
   }
 };
 </script>

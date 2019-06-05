@@ -1,7 +1,7 @@
 // 操作数据库
 const MongoClient = require('mongodb').MongoClient;
 
-const mongoHandle = {
+const mongoHandle = function() {
     MongoClient.connect("mongodb://localhost:27017/runoob", { useNewUrlParser: true }, function(err, db) {
         if (err) throw err;
         const dbase = db.db("MineDb");
