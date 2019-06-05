@@ -12,11 +12,11 @@
             <editor id="tinymce" v-model="tinymceHtml" :init="init"></editor>
           </el-form-item>
           <el-form-item>
-            <el-button @click="publishHandle">发表</el-button>
+            <el-button @click="publishHandle">发布</el-button>
             <el-button>取消</el-button>
           </el-form-item>
         </el-form>
-        <div class="editor-content" v-html="tinymceHtml"></div>
+        <p class="editor-content" v-html="tinymceHtml"></p>
       </div>
     </div>
   </div>
@@ -63,6 +63,9 @@ export default {
           time: time
         };
         this.$store.dispatch("replaceAction", data);
+        this.title = "";
+        this.tinymceHtml = "";
+        this.$message.success("成功");
         return;
       }
 
@@ -112,10 +115,11 @@ export default {
 .editor-content {
   width: 50%;
   height: 480px;
+  white-space: pre-wrap;
   overflow: auto;
   margin-left: 20px;
   padding: 10px;
-  border: 1px solid rgba(0, 0, 0, .2);
+  border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 6px;
   box-sizing: border-box;
 }

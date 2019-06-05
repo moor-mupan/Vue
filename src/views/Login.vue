@@ -7,7 +7,7 @@
       <el-input type="password" v-model="form.pass" clearable></el-input>
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" @click="loginHandle">登录</el-button>
+      <el-button @click="loginHandle">登录</el-button>
       <el-button @click="registerHandle">注册</el-button>
     </el-form-item>
   </el-form>
@@ -84,11 +84,11 @@ export default {
       _this.$refs.form.validate(valid => {
         if (valid) {
           // 执行校验成功后的操作
-          alert("register");
-          _this.form = {
-            email: "",
-            pass: ""
-          };
+          _this.$message.success('暂时无法注册新账号！')
+          // _this.form = {
+          //   email: "",
+          //   pass: ""
+          // };
         } else {
           return false;
         }
@@ -104,7 +104,7 @@ export default {
 <style>
 .login {
   width: 300px;
-  border: 1px solid #eee;
+  border: 1px solid rgba(0, 0, 0, .2);
   border-radius: 6px;
   padding: 10px;
   box-sizing: border-box;
