@@ -43,6 +43,8 @@
 
 <script>
 import Foot from "../components/Foot";
+import axios from 'axios'
+let _this
 export default {
   name: "Home",
   components: { Foot },
@@ -53,30 +55,33 @@ export default {
   },
   computed: {
     count() {
-      return this.$store.getters.articles.length;
+      return _this.$store.getters.count
     }
   },
   methods: {
     tanHandle(idx) {
       let path = this.$route.path;
       if (idx == 1) {
-        this.isActive = true;
-        this.$router.push("/home/publish/id");
+        _this.isActive = true;
+        _this.$router.push("/home/publish/id");
       } else {
-        this.$router.push("/home/list");
-        this.isActive = false;
+        _this.$router.push("/home/list");
+        _this.isActive = false;
       }
     },
     loginOut() {
-      this.$router.push("/");
-    }
+      _this.$router.push("/");
+    },
+  },
+  created() {
+    _this = this
   },
   mounted() {
     let path = this.$route.path;
     if (path == "/home/list") {
-      this.isActive = false;
+      _this.isActive = false;
     } else {
-      this.isActive = true;
+      _this.isActive = true;
     }
   },
   watch: {
