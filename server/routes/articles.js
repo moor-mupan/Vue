@@ -23,25 +23,6 @@ mongoose.connection.on('disconnected', function() {
 router.post('/getArticles', (req, res, next) => {
     const pageIndex = req.body.pageIndex;
     const pageSize = req.body.pageSize;
-    // 方法1
-    /* articles.find({}, (err, doc) => {
-            if (err) {
-                res.json({
-                    Status: '1',
-                    Data: '',
-                    Msg: err.message
-                })
-            } else {
-                res.json({
-                    Status: '0',
-                    Msg: '获取成功',
-                    Data: {
-                        count: doc.length,
-                        list: doc
-                    }
-                })
-            }
-        }) */
     // 分页查询
     const skip = (pageIndex - 1) * pageSize;
     const articleType = req.body.articleType;
@@ -65,5 +46,52 @@ router.post('/getArticles', (req, res, next) => {
         }
     })
 })
+
+/* 根据ID查询article */
+router.get('/getArticleDetail', (req, res, next) => {
+    const articleId = req.query.articleId
+    articles.findOne({ articleId }, (err, doc) => {
+        if (err) {
+            res.json({
+                Status: '1',
+                Data: '',
+                Msg: err.message
+            })
+        } else {
+            res.json({
+                Status: '0',
+                Msg: '获取成功',
+                Data: {
+                    count: doc.length,
+                    Item: doc
+                }
+            })
+        }
+    })
+})
+
+/* 编辑article */
+router.post('/saveArticle', (req, res, next) => {
+    const articleId = req.body.articleId
+    const article = req.body
+    console.log("++", articleId, article, "++")
+        /* 存在问题 */
+    articles.findOneAndUpdate({ articleId }, { articleTitle }, (err, doc) => {
+        if (err) {
+            res.json({
+                Status: '1',
+                Data: '',
+                Msg: err.message
+            })
+        } else {
+            res.json({
+                Status: '0',
+                Msg: '编辑成功',
+                Data: doc
+            })
+        }
+    })
+})
+
 
 module.exports = router;

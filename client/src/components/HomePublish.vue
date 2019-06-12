@@ -1,22 +1,23 @@
 <template>
   <div>
     <div class="pd10">
-      <h1 class="pd10">标题</h1>
-      <el-input v-model="title" type="text" placeholder="文章标题" clearable></el-input>
+      <h1 class="pd10" >标题</h1>
+      <el-input v-model="article.articleTitle" type="text" placeholder="文章标题" clearable></el-input>
+      <el-input v-model="article.articleId" ></el-input>
     </div>
     <div class="pd10">
       <h1 class="pd10">内容</h1>
       <div class="content">
         <el-form ref="form" class="editor">
           <el-form-item>
-            <editor id="tinymce" v-model="tinymceHtml" :init="init"></editor>
+            <editor id="tinymce" v-model="article.articleContent" :init="init"></editor>
           </el-form-item>
           <el-form-item>
             <el-button @click="publishHandle">发布</el-button>
             <el-button>取消</el-button>
           </el-form-item>
         </el-form>
-        <p class="editor-content" v-html="tinymceHtml"></p>
+        <p class="editor-content" v-html="article.articleContent"></p>
       </div>
     </div>
   </div>
@@ -25,14 +26,14 @@
 <script>
 import tinymce from "tinymce/tinymce";
 import Editor from "@tinymce/tinymce-vue";
+import axios from "axios";
 
 export default {
   name: "HomePublish",
   components: { Editor },
   data() {
     return {
-      title: "",
-      tinymceHtml: "",
+      article: {},
       init: {
         contextmenu: "link image imagetools table spellchecker",
         min_height: 480,
@@ -49,55 +50,37 @@ export default {
   },
   methods: {
     publishHandle() {
-      let idx = this.$store.getters.articles.length + 1;
-      let date = new Date();
-      let time = date.toLocaleDateString().replace(/\//g, "-");
-      let content = this.tinymceHtml;
-      let data = {};
-      const pathId = this.$route.params.id;
-      if (pathId !== "id") {
-        data = {
-          id: pathId,
-          title: this.title,
-          content: content,
-          time: time
-        };
-        this.$store.dispatch("replaceAction", data);
-        this.title = "";
-        this.tinymceHtml = "";
-        this.$message.success("成功");
+      const article = this.article
+      axios.post('/articles/saveArticle', article)
+      .then(res => {
+        if (res.data.Status == 0) {
+          this.$message({
+          message: res.data.Msg,
+          type: 'success'
+        });
+        }
+      })
+    },
+    editArticle() {
+      const articleId = this.$route.params.id;
+      if (articleId === "id") {
+        this.title = ''
+        this.tinymceHtml = ''
         return;
       }
-
-      if (!this.title.trim()) {
-        this.$message.error("请输入文章标题");
-        return;
-      }
-      data = {
-        id: "00" + idx,
-        title: this.title,
-        content: content,
-        time: time
-      };
-      this.$store.dispatch("addAction", data);
-      this.title = "";
-      this.tinymceHtml = "";
-      this.$message.success("成功");
+      axios
+        .get("/articles/getArticleDetail", { params: { articleId } })
+        .then(res => {
+          if (res.data.Status == 0) {
+            const article = res.data.Data.Item
+            this.article = article
+          }
+        });
     }
   },
   mounted() {
-    tinymce.init({});
-    const { id } = this.$route.params;
-    if (id === "id") {
-      return;
-    }
-    const articles = this.$store.getters.articles;
-    const articleArr = articles.filter(article => {
-      return article.id === id;
-    });
-    console.log(articleArr);
-    this.title = articleArr[0].title;
-    this.tinymceHtml = articleArr[0].content;
+    tinymce.init({})
+    this.editArticle()
   }
 };
 </script>

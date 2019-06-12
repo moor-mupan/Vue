@@ -1,34 +1,39 @@
 <template>
   <div class="pd10">
-    <h3 class="title pd10">{{article.title}}</h3>
-    <div v-html="article.content"></div>
+    <h3 class="title pd10">{{article.articleTitle}}</h3>
+    <div v-html="article.articleContent"></div>
   </div>
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "HomeDetail",
   data() {
     return {
-      article: {
-        title: '',
-        content: ''
-      }
+      article: {}
     };
   },
-  computed: {},
+  methods: {
+    getArticleDetail() {
+      const articleId = this.$route.params.id;
+      axios
+        .get("/articles/getArticleDetail", { params: { articleId: articleId } })
+        .then(res => {
+          if (res.data.Status == 0) {
+            this.article = res.data.Data.Item;
+          }
+        });
+    }
+  },
   mounted() {
-    let content = this.$store.getters.articles.filter(val => {
-      return val.id === this.$route.path.replace(/\/home\/detail\//g, "");
-    });
-    this.article.content = content[0].content;
-    this.article.title = content[0].title;
+    this.getArticleDetail();
   }
 };
 </script>
 
 <style scoped>
-.title{
+.title {
   text-align: center;
 }
 </style>
