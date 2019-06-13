@@ -74,23 +74,47 @@ router.get('/getArticleDetail', (req, res, next) => {
 router.post('/saveArticle', (req, res, next) => {
     const articleId = req.body.articleId
     const article = req.body
-    console.log("++", articleId, article, "++")
-        /* 存在问题 */
-    articles.findOneAndUpdate({ articleId }, { articleTitle }, (err, doc) => {
-        if (err) {
-            res.json({
-                Status: '1',
-                Data: '',
-                Msg: err.message
-            })
-        } else {
-            res.json({
-                Status: '0',
-                Msg: '编辑成功',
-                Data: doc
-            })
-        }
-    })
+    console.log("++", article, "++")
+    articles.findOne({ articleId }, (err, article) => {
+            if (err) {
+                res.json({
+                    Status: '1',
+                    Data: '',
+                    Msg: err.message
+                })
+            } else {
+                article.save((err, article) => {
+                    if (err) {
+                        res.json({
+                            Status: '1',
+                            Data: '',
+                            Msg: err.message
+                        })
+                    } else {
+                        res.json({
+                            Status: '0',
+                            Data: article,
+                            Msg: '编辑成功'
+                        })
+                    }
+                })
+            }
+        })
+        // articles.update({ articleId: articleId }, { "$set": { articleTitle: article.articleTitle } }, (err, doc) => {
+        //     if (err) {
+        //         res.json({
+        //             Status: '1',
+        //             Data: '',
+        //             Msg: err.message
+        //         })
+        //     } else {
+        //         res.json({
+        //             Status: '0',
+        //             Msg: '编辑成功',
+        //             Data: doc
+        //         })
+        //     }
+        // })
 })
 
 
