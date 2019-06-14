@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 let _this;
 export default {
   data() {
@@ -54,26 +55,22 @@ export default {
     loginHandle() {
       _this.$refs.form.validate(valid => {
         if (valid) {
-          // 执行校验成功后的操作
-          let users = _this.$store.getters.users;
-          let user = users.filter((user, idx) => {
-            return user.email === _this.form.email;
-          });
-          let userPass = users.filter((user, idx) => {
-            return user.pass === _this.form.pass;
-          });
-          if (user.length === 0) {
-            _this.$message.error("该账号未注册！");
-            return;
+          let pass = 'abc' + _this.form.pass + '0927'
+          const user = {
+            userName: _this.form.email,
+            userPwd: pass
           }
-          if (userPass.length === 0) {
-            _this.$message.error("密码错误！");
-            return;
-          }
-          // _this.form = {
-          //   email: '',
-          //   pass: ''
-          // }
+          axios.post('/users/login',user)
+          .then((res) => {
+            if (res.data.Status == '0') {
+              _this.$message({
+                type: 'success',
+                message: '登录成功'
+              })
+            } else {
+              _this.$message(res.data.Msg)
+            }
+          })
           _this.$router.push("/home/publish/id");
         } else {
           return false;
@@ -85,10 +82,6 @@ export default {
         if (valid) {
           // 执行校验成功后的操作
           _this.$message.success('暂时无法注册新账号！')
-          // _this.form = {
-          //   email: "",
-          //   pass: ""
-          // };
         } else {
           return false;
         }
@@ -101,7 +94,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .login {
   width: 300px;
   border: 1px solid rgba(0, 0, 0, .2);
