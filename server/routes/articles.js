@@ -7,15 +7,15 @@ const articles = require('../models/articles');
 mongoose.connect('mongodb://127.0.0.1:27017/MineDb');
 
 /* 监听数据库连接 */
-mongoose.connection.on('connected', function() {
+mongoose.connection.on('connected', function () {
     console.log('数据库连接成功!');
 });
 
-mongoose.connection.on('error', function() {
+mongoose.connection.on('error', function () {
     console.log('数据库连接失败!');
 });
 
-mongoose.connection.on('disconnected', function() {
+mongoose.connection.on('disconnected', function () {
     console.log('数据库连接断开!');
 });
 
@@ -48,8 +48,8 @@ router.post('/getArticles', (req, res, next) => {
 })
 
 /* 根据ID查询article */
-router.get('/getArticleDetail', (req, res, next) => {
-    const articleId = req.query.articleId
+router.post('/getArticleDetail', (req, res, next) => {
+    const articleId = req.body.articleId
     articles.findOne({ articleId }, (err, doc) => {
         if (err) {
             res.json({
@@ -70,52 +70,47 @@ router.get('/getArticleDetail', (req, res, next) => {
     })
 })
 
-/* 编辑article */
-router.post('/saveArticle', (req, res, next) => {
-    const articleId = req.body.articleId
-    const article = req.body
-    console.log("++", article, "++")
-    articles.findOne({ articleId }, (err, article) => {
-            if (err) {
-                res.json({
-                    Status: '1',
-                    Data: '',
-                    Msg: err.message
+
+/* 新增文章 */
+router.post('/addArticle', (req, res, next) => {
+    const articleTitle = req.body.articleTitle
+    const artitleContent = req.body.artitleContent
+    articles.find({}, (err, allDoc) => {
+        if (err) {
+            res.json({
+                Status: '1',
+                Msg: err.message,
+                Data: ''
+            })
+        } else {
+            if (allDoc) {
+                const arts = new articles({
+                    articleTitle: articleTitle,
+                    artitleContent: artitleContent,
+                    articleId: '100000' + allDoc.length,
+                    artitleCreateTime: new Date().getTime(),
+                    articleType: "js",
+                    articleAuthor: "M先生"
                 })
-            } else {
-                article.save((err, article) => {
+                arts.save((err, doc) => {
                     if (err) {
                         res.json({
                             Status: '1',
-                            Data: '',
-                            Msg: err.message
+                            Msg: err.message,
+                            Data: ''
                         })
                     } else {
                         res.json({
                             Status: '0',
-                            Data: article,
-                            Msg: '编辑成功'
+                            Msg: '添加成功',
+                            Data: doc
                         })
                     }
                 })
             }
-        })
-        // articles.update({ articleId: articleId }, { "$set": { articleTitle: article.articleTitle } }, (err, doc) => {
-        //     if (err) {
-        //         res.json({
-        //             Status: '1',
-        //             Data: '',
-        //             Msg: err.message
-        //         })
-        //     } else {
-        //         res.json({
-        //             Status: '0',
-        //             Msg: '编辑成功',
-        //             Data: doc
-        //         })
-        //     }
-        // })
-})
+        }
+    })
 
+})
 
 module.exports = router;
