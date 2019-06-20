@@ -21,11 +21,11 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // 登录拦截
-app.use(function (req, res, next) {
+app.use(function(req, res, next) {
     if (req.cookies.userId) {
         next()
     } else {
-        if (req.originalUrl == '/users/login' || req.originalUrl == '/users/logout') {
+        if (req.originalUrl == '/users/login' || req.originalUrl == '/users/logout' || req.originalUrl == '/users/register') {
             next();
         } else {
             res.json({
@@ -42,12 +42,12 @@ app.use('/users', usersRouter);
 app.use('/articles', articlesRouter);
 
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {
+app.use(function(req, res, next) {
     next(createError(404));
 });
 
 // error handler
-app.use(function (err, req, res, next) {
+app.use(function(err, req, res, next) {
     // set locals, only providing error in development
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};
